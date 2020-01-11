@@ -28,3 +28,19 @@ const src = ts.createSourceFile('main.ts', '', ts.ScriptTarget.Latest);
 
 console.log(printer.printNode(ts.EmitHint.Unspecified, Func(), src));
 ```
+
+## Getting started
+
+```sh
+$ npm i tsastx -D
+```
+
+```json
+/* tsconfig.json */
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "Astsx.$"
+  }
+}
+```
