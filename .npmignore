@@ -1,0 +1,6 @@
+.git
+.github
+src/
+generator/
+tsconfig.json
+yarn.lock
