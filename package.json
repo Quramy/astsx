@@ -21,6 +21,9 @@
     "url": "https://github.com/Quramy/astsx/issues"
   },
   "homepage": "https://github.com/Quramy/astsx#readme",
+  "peerDependencies": {
+    "typescript": "^3.0.0"
+  },
   "devDependencies": {
     "@types/node": "^13.1.6",
     "ts-node": "^8.6.1",
