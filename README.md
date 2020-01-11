@@ -32,7 +32,7 @@ console.log(printer.printNode(ts.EmitHint.Unspecified, Func(), src));
 ## Getting started
 
 ```sh
-$ npm i tsastx -D
+$ npm i astsx -D
 ```
 
 ```json
@@ -44,3 +44,7 @@ $ npm i tsastx -D
   }
 }
 ```
+
+## Disclaimer
+
+For now, return type of TSX expression is inferred to not subtype of `ts.Node` but `any` type. It's TypeScript `JSX.Element` type inference mechanism issue. See https://github.com/microsoft/TypeScript/issues/21699, if you want detail.
