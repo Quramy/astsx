@@ -1,0 +1,27 @@
+{
+  "name": "astsx",
+  "version": "1.0.0",
+  "description": "Write TypeScript AST with TSX",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Quramy/astsx.git"
+  },
+  "keywords": [
+    "TypeScript",
+    "AST"
+  ],
+  "author": "Quramy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Quramy/astsx/issues"
+  },
+  "homepage": "https://github.com/Quramy/astsx#readme",
+  "devDependencies": {
+    "@types/node": "^13.1.6",
+    "typescript": "^3.7.4"
+  }
+}
