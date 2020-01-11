@@ -2,7 +2,7 @@
 
 Write TypeScript AST with TSX
 
-```ts
+```jsx
 import ts from 'typescript';
 import Astsx from 'astsx';
 
