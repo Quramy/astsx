@@ -4,6 +4,7 @@ import ts from "typescript";
 import { createPropType } from "./prop-type";
 import { overloadFuncSig } from "./overload-func-sig";
 import { funcBody } from "./func-body";
+import { wrapWithTs } from "./util";
 
 function isSubtypeFromTsNode(type: ts.Type): boolean {
   if (type.symbol && type.symbol.escapedName === 'Node') return true;
@@ -87,9 +88,6 @@ function main() {
   for (const functionOverloads of funcDefsList) {
     if (functionOverloads.declarations.length > 1) continue; // TODO
 
-    // if (functionOverloads.functionName !== 'createCatchClause' && functionOverloads.functionName !== 'createIdentifier') continue;
-    if (funcBodys.length > 20) break;
-
     propTypeDeclarations.push(createPropType(typeChecker, functionOverloads.declarations[0], functionOverloads.nodeNamePascal, -1));
     kindLeterals.push(
       ts.createLiteralTypeNode(
@@ -116,7 +114,7 @@ function main() {
     );
   }
 
-  const transformer = (ctx: ts.TransformationContext) => {
+  const funcCreateTransformer = (ctx: ts.TransformationContext) => {
     const visit = (node: ts.Node): ts.Node => {
       if (ts.isTypeAliasDeclaration(node) && node.name.text === 'Kinds') {
         return ts.updateTypeAliasDeclaration(
@@ -158,7 +156,26 @@ function main() {
     return (src: ts.SourceFile) => ts.visitNode(src, visit);
   };
 
-  const { transformed } = ts.transform(templateSrc, [transformer]);
+  const addTsNamespaceTransformer = (ctx: ts.TransformationContext) => {
+    let inAstsx = false;
+    const visit = (node: ts.Node): ts.Node => {
+      if (ts.isModuleDeclaration(node) && ts.isIdentifier(node.name) && node.name.text === 'Astsx') {
+        inAstsx = true;
+        const ret = ts.visitEachChild(node, visit, ctx);
+        inAstsx = false;
+        return ret;
+      }
+      if (inAstsx  && ts.isTypeReferenceNode(node)) {
+        if (ts.isIdentifier(node.typeName) && !node.typeName.text.endsWith('Props') && node.typeName.text !== 'Kinds') {
+          return wrapWithTs(ts.visitEachChild(node, visit, ctx));
+        }
+      }
+      return ts.visitEachChild(node, visit, ctx);
+    };
+    return (src: ts.SourceFile) => ts.visitNode(src, visit);
+  };
+
+  const { transformed } = ts.transform(templateSrc, [funcCreateTransformer, addTsNamespaceTransformer]);
 
 
   const printer = ts.createPrinter();

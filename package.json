@@ -1,10 +1,11 @@
 {
   "name": "astsx",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.0",
   "description": "Write TypeScript AST with TSX",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prebuild": "ts-node generator/generator.ts > src/index.ts",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
   "homepage": "https://github.com/Quramy/astsx#readme",
   "devDependencies": {
     "@types/node": "^13.1.6",
+    "ts-node": "^8.6.1",
     "typescript": "^3.7.4"
   }
 }

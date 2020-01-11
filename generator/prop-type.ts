@@ -1,5 +1,4 @@
 import ts from 'typescript';
-import { wrapWithTs } from "./util";
 
 export function createPropType(checker: ts.TypeChecker, dec: ts.FunctionDeclaration, nodeNamePascal: string, index = -1) {
   const suffix = index === -1 ? '' : `_${index}`;
@@ -11,13 +10,13 @@ export function createPropType(checker: ts.TypeChecker, dec: ts.FunctionDeclarat
     ts.createTypeLiteralNode(
       dec.parameters.map(parameter => {
         const ptype = parameter.type!;
-        const pptype = ts.isUnionTypeNode(ptype) ? ts.createUnionTypeNode(ptype.types.map(wrapWithTs)) : wrapWithTs(ptype);
-        const allowedUndefined = ts.isUnionTypeNode(ptype) && ptype.types.some(t => ts.isToken(ts.createToken(ts.SyntaxKind.UndefinedKeyword)));
+        const paramName = (parameter.name as ts.Identifier);
+        const allowedUndefined = ts.isUnionTypeNode(ptype) && ptype.types.some(t => t.getText() === 'undefined');
         return ts.createPropertySignature(
           parameter.modifiers,
-          (parameter.name as ts.Identifier).text,
+          paramName.text,
           allowedUndefined ? ts.createToken(ts.SyntaxKind.QuestionToken) : undefined,
-          pptype,
+          ptype,
           undefined,
         );
       }),

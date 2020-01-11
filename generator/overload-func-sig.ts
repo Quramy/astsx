@@ -1,5 +1,4 @@
 import ts from 'typescript';
-import { wrapWithTs } from "./util";
 
 export function overloadFuncSig(dec: ts.FunctionDeclaration, nodeNamePascal: string, nodeNameCamel: string) {
   return ts.createFunctionDeclaration(
@@ -28,7 +27,7 @@ export function overloadFuncSig(dec: ts.FunctionDeclaration, nodeNamePascal: str
         undefined,
       ),
     ],
-    wrapWithTs(ts.createTypeReferenceNode(ts.createIdentifier(nodeNamePascal), undefined)),
+    dec.type,
     undefined,
   );
 }
